@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CineSAP", "CineSAP\", "{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		ProjectReferences = "{9C65C585-8E92-4D02-AF9B-8D2701CBC411}|DataAccess.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/CineSAP"
+		Debug.AspNetCompiler.PhysicalPath = "CineSAP\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\CineSAP\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/CineSAP"
+		Release.AspNetCompiler.PhysicalPath = "CineSAP\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\CineSAP\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "19648"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{9C65C585-8E92-4D02-AF9B-8D2701CBC411}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chilli.Opf3", "Chilli.Opf3", "{B8C06BF8-4992-4A6C-A4A2-3874E40E2297}"
+	ProjectSection(SolutionItems) = preProject
+		Chilli.Opf3\Chili.Opf3.dll = Chilli.Opf3\Chili.Opf3.dll
+		Chilli.Opf3\Chili.Opf3.Linq.dll = Chilli.Opf3\Chili.Opf3.Linq.dll
+		Chilli.Opf3\Chili.Opf3.Linq.xml = Chilli.Opf3\Chili.Opf3.Linq.xml
+		Chilli.Opf3\Chili.Opf3.xml = Chilli.Opf3\Chili.Opf3.xml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

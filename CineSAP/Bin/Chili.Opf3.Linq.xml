@@ -1,0 +1,881 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Chili.Opf3.Linq</name>
+    </assembly>
+    <members>
+        <member name="T:Chili.Opf3.Linq.StringMethodsHandler">
+            <summary>
+            Thsi class converts some methods on string into strings that are 
+            SQL compatible and can be executed on the storage as part of a
+            SQL query.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.IMethodHandler">
+            <summary>
+            This interface is implemented by classes to handle special SQL methods. Examples on 
+            how to implement this interface are found in <see cref="T:Chili.Opf3.Linq.QueryUtilityMethodsHandler">QueryUtilityMethodsHandler</see>
+            and <see cref="T:Chili.Opf3.Linq.StringMethodsHandler">StringMethodsHandler</see>.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.IMethodHandler.CanHandle(System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            Returns whether the class can handle the given method.
+            </summary>
+            <param name="method">The method to handle.</param>
+            <param name="type">The type on which the method is defined.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.IMethodHandler.Handle(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Returns the method call converted in an SQL compatible string.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.StringMethodsHandler.CanHandle(System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            Returns whether the class can handle the given method.
+            </summary>
+            <param name="method">The method to handle.</param>
+            <param name="type">The type on which the method is defined.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.StringMethodsHandler.Handle(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Returns the method call converted in an SQL compatible string.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="T:Chili.Opf3.Linq.ILinqQuery">
+            <summary>
+            This interface is implemented by the <see cref="T:Chili.Opf3.Linq.LinqQuery`1">LinqQuery</see>
+            to allow classes to interact with the query without knowledge of the generic
+            argument.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ILinqQuery.Expressions">
+            <summary>
+            Gets the expressions of the query.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ILinqQuery.PersistentType">
+            <summary>
+            Gets the persistent type that's going to be the fetched by the query.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ILinqQuery.Context">
+            <summary>
+            Gets the associated <see cref="T:Chili.Opf3.ObjectContext">ObjectContext</see>.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.QueryUtility">
+            <summary>
+            This class holds several methods that can be used in a LINQ query.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Max(System.Object)">
+            <summary>
+            Gets the maximum of the given value.
+            </summary>
+            <param name="member">The member that's maximum is returned.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Min(System.Object)">
+            <summary>
+            Gets the minimum of the given value.
+            </summary>
+            <param name="member">The member that's minimum is returned.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Count(System.Object)">
+            <summary>
+            Gets the count of the given value.
+            </summary>
+            <param name="member">The member that's count is returned.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Field``1(System.String,System.String)">
+            <summary>
+            Allows to specify a field that is only found in the storage and not in the
+            peristent objects.
+            </summary>
+            <param name="field">The name of the field.</param>
+            <param name="entity">The name of the entity.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Field``1(System.Type,System.String)">
+            <summary>
+            Allows to specify a field that is only found in the storage and not in the
+            persistent objects.
+            </summary>
+            <param name="field">The name of the field.</param>
+            <param name="persistent">The type of the persistent.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Between(System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+            Checks if the member is between the given two dates.
+            </summary>
+            <param name="member">The member that is checked.</param>
+            <param name="begin">The begin of the time span.</param>
+            <param name="end">The end of the time span.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.In(System.Object,System.Object[])">
+            <summary>
+            Checks if the member is equals to one of the given items.
+            </summary>
+            <param name="member">The member who is checked for values.</param>
+            <param name="items">The items the member is checked for.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtility.Overlaps(System.DateTime,System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+            Checks if the time span specified with the first to arguments is overlapping with the time span specified
+            in the third and fourth argument.
+            </summary>
+            <param name="begin1">The begin of the first time span that is checked for overlap.</param>
+            <param name="end1">The end of the first time span that is checked for overlap.</param>
+            <param name="begin2">The begin of the second time span that is checked for overlap.</param>
+            <param name="end2">The end of the second time span that is checked for overlap.</param>
+        </member>
+        <member name="T:Chili.Opf3.Linq.QueryUtilityMethodsHandler">
+            <summary>
+            This class converts the methods on <see cref="T:Chili.Opf3.Linq.QueryUtility">QueryUtility</see>
+            into strings that are SQL compatible and can be executed on the storage 
+            as part of a SQL query.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.CanHandle(System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            Returns whether the class can handle the given method.
+            </summary>
+            <param name="method">The method to handle.</param>
+            <param name="type">The type on which the method is defined.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.Handle(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Returns the method call converted in an SQL compatible string.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.HandleInMethod(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Handles the In method.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.HandleOverlapsMethod(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Handles the overlaps method.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.HandleBetweenMethod(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Handles the between method.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.HandleFieldMethod(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Handles the "Field" method.
+            </summary>
+            <param name="expression">The expression that is converted to the SQL compatible string. This expression
+            contains the method that has been called with all the arguments and eventually sub expressions.</param>
+            <param name="args">Holds a utility class that contains different methods to be used during string compilation.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.InvokeNewExpression``1(System.Linq.Expressions.NewExpression)">
+            <summary>
+            Invokes the new expression to return an instance of the object that is created in the expression.
+            </summary>
+            <param name="expression">The expression to be invoked.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.QueryUtilityMethodsHandler.CreateParametersFromArray(System.Array,Chili.Opf3.Linq.MethodHandlerArgs)">
+            <summary>
+            Creates the parameters from a given array.
+            </summary>
+            <param name="array">The array that is translated into parameters.</param>
+            <param name="args">The arguments that are passed in.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Chili.Opf3.LinqExtensions">
+            <summary>
+            This class holds extension methods for LINQ in Opf3.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.GetPersistents``1(Chili.Opf3.ObjectContext)">
+            <summary>
+            Gets all persistents from the storage.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.RemoveAll``1(Chili.Opf3.ObjectContext,Chili.Opf3.Linq.LinqQuery{``0})">
+            <summary>
+            Removes all persistents from the storage that match the given query.
+            </summary>
+            <param name="context">Represents the ObjectContext instance that is used to remove all persistent objects.</param>
+            <param name="query">The query that is executed to find the persistent objects that are deleted.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.Where``1(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Invoked each time a where condition is specified.
+            </summary>
+            <param name="predicate">The predicate used to filter the query.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.OrderBy``2(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Invoked each time an order by condition is specified.
+            </summary>
+            <param name="keySelector">The selector used to specify the order by.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.OrderByDescending``2(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Invoked each time an order by descending condition is specified.
+            </summary>
+            <param name="keySelector">The selector used to specify the order by.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.ThenBy``2(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Invoked each time a second order by ascending condition is specified.
+            </summary>
+            <param name="keySelector">The selector used to specify the order by.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.ThenByDescending``2(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Invoked each time an order by descending condition is specified.
+            </summary>
+            <param name="keySelector">The selector used to specify the order by.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.Join``4(Chili.Opf3.Linq.LinqQuery{``0},Chili.Opf3.Linq.LinqQuery{``1},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.Linq.Expressions.Expression{System.Func{``1,``2}},System.Linq.Expressions.Expression{System.Func{``0,``1,``3}})">
+            <summary>
+            Invoked each time a join is specified.
+            </summary>
+            <param name="outer">The outer part of the join.</param>
+            <param name="inner">The inner part of the join.</param>
+            <param name="outerKeySelector">The outer key.</param>
+            <param name="innerKeySelector">The inner key.</param>
+            <param name="resultSelector">The result of the join.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.GroupJoin``4(Chili.Opf3.Linq.LinqQuery{``0},Chili.Opf3.Linq.LinqQuery{``1},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.Linq.Expressions.Expression{System.Func{``1,``2}},System.Linq.Expressions.Expression{System.Func{``0,Chili.Opf3.Linq.LinqQuery{``1},``3}})">
+            <summary>
+            Invoked each time a group join is specified.
+            </summary>
+            <param name="outer">The outer part of the join.</param>
+            <param name="inner">The inner part of the join.</param>
+            <param name="outerKeySelector">The outer key.</param>
+            <param name="innerKeySelector">The inner key.</param>
+            <param name="resultSelector">The result of the join.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.SelectMany``3(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,Chili.Opf3.Linq.LinqQuery{``1}}},System.Linq.Expressions.Expression{System.Func{``0,``1,``2}})">
+            <summary>
+            Invoked each time a select many is specified.
+            </summary>
+            <param name="collectionSelector">The selector for the collection.</param>
+            <param name="resultSelector">The selector used for the select result.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.Select``2(Chili.Opf3.Linq.LinqQuery{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Invoked each time a select is specified.
+            </summary>
+            <param name="selector">The selector used in the select.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.Take``1(Chili.Opf3.Linq.LinqQuery{``0},System.Int32)">
+            <summary>
+            Invoked each time a take is specified.
+            </summary>
+            <param name="count">The amount of top items to return.</param>
+            <param name="source">The LinqQuery that contains the LINQ statement until to the call of this method.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.First``1(Chili.Opf3.Linq.LinqQuery{``0})">
+            <summary>
+            Gets the first element that is returned by the query. If no result is returned
+            an exception is thrown.
+            </summary>
+            <param name="source">The query that is exectued.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.FirstOrDefault``1(Chili.Opf3.Linq.LinqQuery{``0})">
+            <summary>
+            Gets the first element that is returned by the query. Null is returned if no
+            object could be found.
+            </summary>
+            <param name="source">The query that is exectued.</param>
+        </member>
+        <member name="M:Chili.Opf3.LinqExtensions.DefaultIfEmpty``1(Chili.Opf3.Linq.LinqQuery{``0})">
+            <summary>
+            Returns the default item on a join where the joined item might not be available.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.LinqQueryCommandBuilder">
+            <summary>
+            This class converts <see cref="T:Chili.Opf3.Linq.LinqQuery`1">LinqQuery</see> classes to storage
+            dependent <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see> classes.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ToCompiledQuery(Chili.Opf3.Storages.IStorage,Chili.Opf3.Query.IQuery)">
+            <summary>
+            Converts the <see cref="T:Chili.Opf3.Query.ObjectExpression">ObjectExpression</see> to
+            a storage dependent <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see>. This method should only be
+            called by a class that implements the <see cref="T:Chili.Opf3.Query.IQuery">IQuery</see> interface.
+            </summary>
+            <param name="query"><see cref="T:Chili.Opf3.Query.IQuery">Query</see> object
+            that is converted to a storage dependent <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see>.
+            </param>
+            <param name="storage">The storage that the query is compiled for.</param>
+            <returns>A storage dependent <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see>.</returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.IsSupported(Chili.Opf3.Storages.IStorage,Chili.Opf3.Query.IQuery)">
+            <summary>
+            Returns whether the <see cref="T:Chili.Opf3.Storages.IStorageCommandBuilder">IStorageCommandBuilder</see> supports 
+            the query type on the given storage.
+            </summary>
+            <param name="storage">The storage for which the query should be compiled.</param>
+            <param name="query">The query that should be compiled to a storage dependent command.</param>
+            <returns>True if the query can be parsed by the <see cref="T:Chili.Opf3.Storages.IStorageCommandBuilder">IStorageCommandBuilder</see>.</returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ToCompiledDeleteQuery(Chili.Opf3.Storages.IStorage,Chili.Opf3.Linq.ILinqQuery)">
+            <summary>
+            Creates a delete query from a <see cref="T:Chili.Opf3.Linq.LinqQuery`1">LinqQuery</see>.
+            </summary>
+            <param name="query"><see cref="T:Chili.Opf3.Query.IQuery">Query</see> object
+            that is converted to a storage dependent <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see>.
+            </param>
+            <param name="storage">The storage that the query is compiled for.</param>
+            <returns>A storage dependent <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see>.</returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.#cctor">
+            <summary>
+            Static constructor.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.CreateQuery(Chili.Opf3.Linq.ExpressionsBag,Chili.Opf3.Storages.SqlStorageBase,System.Type,Chili.Opf3.Query.QueryTypes)">
+            <summary>
+            Creates the query from the given <see cref="T:Chili.Opf3.Linq.ILinqQuery">ILinqQuery</see>.
+            </summary>
+            <param name="bag">The expressions bag used to create the output.</param>
+            <param name="storage">The <see cref="T:Chili.Opf3.Storages.SqlStorageBase">SqlStorageBase</see> used to create the SQL.</param>
+            <param name="persistentType">The type of the persistent object.</param>
+            <param name="queryType">The type of the current query that is to execute.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessExpression(System.Linq.Expressions.Expression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes the given expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessNewArrayExpression(System.Linq.Expressions.NewArrayExpression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes a new array expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessUnaryExpression(System.Linq.Expressions.UnaryExpression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes an unary expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessNewExpression(System.Linq.Expressions.NewExpression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes a new expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessMemberExpression(System.Linq.Expressions.MemberExpression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes a member expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessBinaryExpression(System.Linq.Expressions.BinaryExpression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes a binary expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessNodeType(System.Linq.Expressions.ExpressionType,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes the given node type.
+            </summary>
+            <param name="expressionType">The expression type (node type) that is processed.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.ProcessMethodCallExpression(System.Linq.Expressions.MethodCallExpression,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Processes a method call expression.
+            </summary>
+            <param name="expression">The expression that is to process.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.AddParameter(System.Object,System.Type,Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder,System.Text.StringBuilder)">
+            <summary>
+            Adds the parameter to the list of parameters.
+            </summary>
+            <param name="paramValue">The value of parameters.</param>
+            <param name="type">The type of the value.</param>
+            <param name="builder">The builder holding the final query.</param>
+            <param name="value">The value feed into the current method.</param>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.MethodHandlers">
+            <summary>
+            Gets the list of registered method handlers for utility classes registered with the command builder.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder">
+            <summary>
+            This class holds the strings and parameters used to create the 
+            final SQL statement.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.#ctor(Chili.Opf3.Storages.SqlStorageBase,Chili.Opf3.Linq.ExpressionsBag,System.Type,Chili.Opf3.Query.QueryTypes)">
+            <summary>
+            Creates a new instance of the <see cref="T:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder">SqlBuilder Class</see>.
+            </summary>
+            <param name="storage">The storage on which the SQL runs.</param>
+            <param name="bag">The expressions bag that is used to compile the SQL.</param>
+            <param name="persistentType">The type of the persistent object.</param>
+            <param name="queryType">The type of query that is about to be constructed.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.AddEntity(System.String)">
+            <summary>
+            Adds an entity to the list of entities.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.GetLastJoinEntity">
+            <summary>
+            Gets the last entity that was used in a join.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.GetEntitiesString">
+            <summary>
+            Gets a string that holds all the entities used in the query.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.GetSelectString(System.Type)">
+            <summary>
+            Gets the select string for the query.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.ToCompiledQuery">
+            <summary>
+            Returns a <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see> instance that has been
+            generated by this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.GroupJoin">
+            <summary>
+            Gets the group join part of the SQL.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.OrderBy">
+            <summary>
+            Gets the order by part of the SQL.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.Where">
+            <summary>
+            Gets the where part of the SQL.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.Join">
+            <summary>
+            Gets the join part of the SQL.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.Select">
+            <summary>
+            Gets the select part of the SQL.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.ExpressionsBag">
+            <summary>
+            Gets the expressions bag associated with this class.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.PersistentType">
+            <summary>
+            Gets the persistent type.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.Storage">
+            <summary>
+            Gets the <see cref="T:Chili.Opf3.Storages.SqlStorageBase">storage</see> where the query is going
+            to run on.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.JoinedEntityIsAdded">
+            <summary>
+            True to ignore all entities that are added.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.InLeftJoin">
+            <summary>
+            Gets and sets whether we are currently in a left join process.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder.Parameters">
+            <summary>
+            Gets the list of parameters.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.ExpressionsBag">
+            <summary>
+            This class holds all expressions that are handled by a <see cref="T:Chili.Opf3.Linq.LinqQuery`1">LinqQuery</see>.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.ExpressionsBag.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Chili.Opf3.Linq.ExpressionsBag">ExpressionsBag Class</see>.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.ExpressionsBag.IsEmpty">
+            <summary>
+            Gets whether the bag is completely empty.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.GroupJoin">
+            <summary>
+            Gets the group join expressions.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.OrderBy">
+            <summary>
+            Gets the order by expressions.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.Where">
+            <summary>
+            Gets the where expresssions
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.SelectMany">
+            <summary>
+            Gets and sets the select many expression.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.Select">
+            <summary>
+            Gets and sets the select expression.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.TopCount">
+            <summary>
+            Gets and sets the top count that is returned by the query.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.ExpressionsBag.Join">
+            <summary>
+            Gets the join expressions.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.LinqQuery`1">
+             <summary>
+             This class represents a storage independent query that runs on top of Microsoft LINQ.
+             </summary>
+             <remarks>
+             <para>
+             This class represents a storage independent query. The query is then compiled by the
+             framework and executed on a class that implements the <see cref="T:Chili.Opf3.Storages.IStorage">IStorage</see>
+             interface. When creating a LinqQuery you may specify different conditions, joins and 
+             sort options.
+             </para>
+             </remarks>
+             <example>
+             The following example shows how to use LinqQuery in your application.
+             <code lang="CS">
+             // Set up the command builder that converts the LINQ statements to SQL.
+             context.Storage.StorageCommandBuilders.Add(new LinqQueryCommandBuilder());
+             
+             // Create the query.
+             var query = from u in context.GetPersistents&lt;User&gt;()
+                         where u.Age &gt; 40
+            				orderby u.Name ascending
+                         select new { Age = u.Age, u.Name };
+             
+             // Now we can do different things with the query:
+             
+             // Loop over the results.
+             foreach(var item in query)
+             {
+                 // Do something with the item.
+             }
+             
+             // Convert the query to an ObjectSet.
+             var objectSet = query.GetObjectSet();
+             
+             // Convert the query to an ObjectReader.
+             var objectReader = query.GetObjectReader();
+             
+             // ... Other code.
+             </code>
+             </example>	
+             <example>
+             The following example shows on how to use the helper classes to extend the LINQ query.
+             <code lang="CS">
+             // Set up the command builder that converts the LINQ statements to SQL.
+             context.Storage.StorageCommandBuilders.Add(new LinqQueryCommandBuilder());
+             
+             // Check if the name is in the list of items that we give as later arguments.
+             var query1 = from u in context.GetPersistents&lt;User&gt;()
+                          where QueryUtility.In(u.Name, "foo", "bar")
+                          select u;
+                         
+             // Check if the birthday of the users is within the given range.
+             var query2 = from u in context.GetPersistents&lt;User&gt;()
+                          where QueryUtility.Between(u.Birthday, new DateTime(1990, 1, 1), new DateTime(2000, 1, 1)
+                          select u;
+             
+             // Specify a field that is not mapped in the query.
+             var query3 = from u in context.GetPersistents&lt;User&gt;()
+                          where QueryUtility.Field&lt;int&gt;("USERS", "AGE") &gt; 18
+                          select u;
+            
+             // Use the string functions to specify the SQL statement "LIKE".
+             // We could use StartsWith, EndsWith and Contains for the different ways
+             // of how like can be used in SQL.
+             var query4 = from u in context.GetPersistents&lt;User&gt;()
+                          where u.Name.Contains("foo")
+                          select u;
+             
+             // ... Other code.
+             </code>
+             </example>		
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.#ctor(Chili.Opf3.ObjectContext)">
+            <summary>
+            Creates a new instance of the <see cref="T:Chili.Opf3.Linq.LinqQuery`1">LinqQuery Class</see>.
+            </summary>
+            <param name="context">The <see cref="T:Chili.Opf3.ObjectContext">ObjectContext</see> instance associated
+            with this instance.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.Clone``1">
+            <summary>
+            Creates a new object that is a copy of the current instance.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.ToCompiledQuery(Chili.Opf3.Storages.IStorage)">
+            <summary>
+            Converts the <see cref="T:Chili.Opf3.Query.IQuery">IQuery</see> to an
+            <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see> that is then executed on a
+            specific <see cref="T:Chili.Opf3.Storages.IStorage">storage</see>.
+            </summary>
+            <returns>
+            A new <see cref="T:Chili.Opf3.Query.CompiledQuery">CompiledQuery</see> that has been generated using this instance.
+            </returns>
+            <param name="storage">
+            Class that implements the <see cref="T:Chili.Opf3.Storages.IStorage">IStorage</see>
+            interface. The query is executed on that storage.
+            </param>
+            <exception cref="T:System.ArgumentNullException">Storage is null.</exception>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets an enumerator that allows enumerating through all the results of the query.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.System#Collections#Generic#IEnumerable{T}#GetEnumerator">
+            <summary>
+            Gets an enumerator that allows enumerating through all the results of the query.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.GetObjectReader">
+            <summary>
+            Gets an <see cref="T:Chili.Opf3.ObjectReader`1">ObjectReader</see> that holds the results
+            returned by this query.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.GetObjectSet">
+            <summary>
+            Gets an <see cref="T:Chili.Opf3.ObjectSet`1">ObjectSet</see> that holds the results 
+            returned by this query.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.GetObject">
+            <summary>
+            Gets the first object that is returned by the query.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.LinqQuery`1.ToString">
+            <summary>
+            Returns a string representation for the query.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQuery`1.Chili#Opf3#Linq#ILinqQuery#Expressions">
+            <summary>
+            Gets the expressions of the query.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQuery`1.Chili#Opf3#Linq#ILinqQuery#PersistentType">
+            <summary>
+            Gets the persistent type that's going to be the fetched by the query.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQuery`1.Chili#Opf3#Linq#ILinqQuery#Context">
+            <summary>
+            Gets the associated <see cref="T:Chili.Opf3.ObjectContext">ObjectContext</see>.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQuery`1.Expressions">
+            <summary>
+            Gets the expressions of the query.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQuery`1.Timeout">
+            <summary>
+            Specifies the wait time before terminating the attempt to execute a command and generating an error.
+            </summary>
+            <value>An integer that specifies the wait time in seconds.</value>
+            <exception cref="T:System.ArgumentException">Value is lower then zero.</exception>
+        </member>
+        <member name="P:Chili.Opf3.Linq.LinqQuery`1.QueryType">
+            <summary>
+            Returns the <see cref="T:Chili.Opf3.Query.QueryTypes">QueryType</see> of the LinqQuery.
+            </summary>
+            <value>
+            A member of the <see cref="T:Chili.Opf3.Query.QueryTypes">QueryType</see>
+            enumeration.
+            </value>
+        </member>
+        <member name="T:Chili.Opf3.Linq.OrderByExpression">
+            <summary>
+            This class holds one order by expression. It holds additional information,
+            such as the direction of the order.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.OrderByExpression.#ctor(System.Linq.Expressions.Expression,Chili.Opf3.Query.SortDirections)">
+            <summary>
+            Creates a new instance of the <see cref="T:Chili.Opf3.Linq.OrderByExpression">OrderByExpression Class</see>.
+            </summary>
+            <param name="expression">The order by expression.</param>
+            <param name="direction">The direction of the order.</param>
+        </member>
+        <member name="P:Chili.Opf3.Linq.OrderByExpression.Expression">
+            <summary>
+            Gets the order by expression.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.OrderByExpression.Direction">
+            <summary>
+            Gets the direction of the order.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.MethodHandlerArgs">
+            <summary>
+            This class holds different utility methods that are useful during SQL generation
+            for classes that implement the <see cref="T:Chili.Opf3.Linq.IMethodHandler">IMethodHandler</see>
+            interface, such as <see cref="T:Chili.Opf3.Linq.QueryUtilityMethodsHandler">QueryUtilityMethodsHandler</see>
+            and <see cref="T:Chili.Opf3.Linq.StringMethodsHandler">StringMethodHandler</see>.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.MethodHandlerArgs.#ctor(Chili.Opf3.Linq.LinqQueryCommandBuilder.SqlBuilder)">
+            <summary>
+            Creates a new instance of the <see cref="T:Chili.Opf3.Linq.MethodHandlerArgs">MethodHandlerArgs Class</see>.
+            </summary>
+            <param name="builder">The SqlBuilder associated with the class.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.MethodHandlerArgs.AddParameter(System.Object,System.Type)">
+            <summary>
+            Adds a parameter to the final SQL command. The string that is returned
+            is the SQL representation of the parameter that has been added.
+            </summary>
+            <param name="value">The value of the parameter.</param>
+            <param name="valueType">The type of the parameter.</param>
+            <returns>The string representation of the added parameter.</returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.MethodHandlerArgs.ProcessExpression(System.Linq.Expressions.Expression)">
+            <summary>
+            Processes a (sub-)expression and returns the SQL statement for that expression.
+            </summary>
+            <param name="expression">The expression that is processed.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.MethodHandlerArgs.AddEntity(System.String)">
+            <summary>
+            Adds an entity (table) to the final SQL statemetnt.
+            </summary>
+            <param name="entity">The entity (table) to add.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.MethodHandlerArgs.GetValue(System.Linq.Expressions.MemberExpression)">
+            <summary>
+            Gets the value of the member expression. Null is returned if no value could
+            be fetched.
+            </summary>
+            <param name="memberExpression">The member expression whose value is returned.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Chili.Opf3.Linq.MethodHandlerArgs.Storage">
+            <summary>
+            Returns the storage on which the final SQL statement is going to run on.
+            </summary>
+        </member>
+        <member name="P:Chili.Opf3.Linq.MethodHandlerArgs.PersistentType">
+            <summary>
+            Returns the type of the persistent objects that are going to be generated
+            by the result from the storage. May be an anonymous type, if there is a 
+            join with an anonymous type as result is involved.
+            </summary>
+        </member>
+        <member name="T:Chili.Opf3.Linq.AnonymousTypeMappingProvider">
+            <summary>
+            Creates the type mapping for a persistent type by inspecting the attributes that are set
+            on the members of the persistent type.
+            </summary>
+        </member>
+        <member name="M:Chili.Opf3.Linq.AnonymousTypeMappingProvider.GetPersistentAttribute(System.Type)">
+            <summary>
+            Returns the persistent attribute of the type or null if the type has no 
+            <see cref="T:Chili.Opf3.PersistentAttribute">PersistentAttribute</see>.
+            </summary>
+            <param name="type">Type investigated for the <see cref="T:Chili.Opf3.PersistentAttribute">PersistentAttribute</see>.</param>
+        </member>
+        <member name="M:Chili.Opf3.Linq.AnonymousTypeMappingProvider.GetMemberFieldAttribute(System.Type,System.Reflection.MemberInfo)">
+            <summary>
+            Returns the <see cref="T:Chili.Opf3.FieldAttribute">FieldAttribute</see> for the given member. If the member is not mapped,
+            null is returned.
+            </summary>
+            <param name="type">The persistent type that's mapping is created.</param>
+            <param name="member">The member of the persistent type.</param>
+            <returns>An instance of the <see cref="T:Chili.Opf3.FieldAttribute">FieldAttribute</see> or null if the member is not mapped.</returns>
+        </member>
+        <member name="M:Chili.Opf3.Linq.AnonymousTypeMappingProvider.GetMemberRelationAttribute(System.Type,System.Reflection.MemberInfo,System.Type)">
+            <summary>
+            Returns the <see cref="T:Chili.Opf3.Relations.RelationAttribute">RelationAttribute</see> for the given member. If the member does not
+            have an attribute set, null is returned.
+            </summary>
+            <param name="type">The persistent type that's mapping is created.</param>
+            <param name="member">The member of the persistent type.</param>
+            <param name="relatedType">The related object's type.</param>
+            <returns>An instance of the <see cref="T:Chili.Opf3.Relations.RelationAttribute">RelationAttribute</see> or null if the member does not have
+            an attribute set.</returns>
+        </member>
+    </members>
+</doc>
