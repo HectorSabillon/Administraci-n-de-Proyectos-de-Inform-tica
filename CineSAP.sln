@@ -4,7 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CineSAP", "CineSAP\", "{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
-		ProjectReferences = "{9C65C585-8E92-4D02-AF9B-8D2701CBC411}|DataAccess.dll;"
+		ProjectReferences = ""
 		Debug.AspNetCompiler.VirtualPath = "/CineSAP"
 		Debug.AspNetCompiler.PhysicalPath = "CineSAP\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\CineSAP\"
@@ -22,30 +22,38 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "CineSAP", "CineSAP\", "{0FB
 		VWDPort = "19648"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{9C65C585-8E92-4D02-AF9B-8D2701CBC411}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chilli.Opf3", "Chilli.Opf3", "{B8C06BF8-4992-4A6C-A4A2-3874E40E2297}"
-	ProjectSection(SolutionItems) = preProject
-		Chilli.Opf3\Chili.Opf3.dll = Chilli.Opf3\Chili.Opf3.dll
-		Chilli.Opf3\Chili.Opf3.Linq.dll = Chilli.Opf3\Chili.Opf3.Linq.dll
-		Chilli.Opf3\Chili.Opf3.Linq.xml = Chilli.Opf3\Chili.Opf3.Linq.xml
-		Chilli.Opf3\Chili.Opf3.xml = Chilli.Opf3\Chili.Opf3.xml
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C65C585-8E92-4D02-AF9B-8D2701CBC411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0FB3EE72-7C65-4D63-9DD4-3F0E150773D5}.Release|x86.ActiveCfg = Debug|Any CPU
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Debug|x86.ActiveCfg = Debug|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Debug|x86.Build.0 = Debug|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Release|Any CPU.ActiveCfg = Release|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Release|x86.ActiveCfg = Release|x86
+		{064A1210-F369-49BE-BD1E-97E6FDBEE2B7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
