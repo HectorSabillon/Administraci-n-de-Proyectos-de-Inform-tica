@@ -6,107 +6,65 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using FBConnectAuth;
 using Facebook.Schema;
-using Facebook;
+using Facebook.Rest;
+using Facebook.Session;
+using Facebook.Utility;
 using Facebook.Web;
 using System.Configuration;
-using System.Data;
-
-using AjaxControlToolkit;
-using AjaxControlToolkit.HTMLEditor;
 
 public partial class _Default : System.Web.UI.Page
 {
+    #region Private Members
+
+    private const string APPLICATION_KEY = "50675d20abae424d58d42d0ffe43990d";
+    private const string SECRET_KEY = "94da7bd77167c18aa7b075d87f445cf9";
+
+    private Api _facebookAPI;
+    private ConnectSession _connectSession;
+
+    #endregion Private Members
+
+    #region Page Load
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //PruebaDatos.DataAccess da = new PruebaDatos.DataAccess();
 
-
-        Accordion1.RequireOpenedPane = false;
-        aggregarPublicaciones();       
-
+        /*Literal1.Text = @"<asp:Accordion><Panes><asp:AccordionPane> " +
+             "<Header><div>" +
+             "Prueba" +
+            "</div></Header>" +
+            "<Content>  " +
+            "Prueba de Contenido</Content>  " +
+        "</asp:AccordionPane>" +
+        @"<asp:AccordionPane>
+            <Header><div>
+                Lol
+            </div></Header>
+            <Content>
+                Prueba de Lol
+            </Content>
+            </asp:AccordionPane>
+            </Panes> 
+        </asp:Accordion>";
+         * */
     }
 
-    void aggregarPublicaciones()
-    {
-        DataAccess.DataAccess da = new DataAccess.DataAccess();
-        Chili.Opf3.ObjectSet<DataAccess.Publicacion> setPublicacion = new Chili.Opf3.ObjectSet<DataAccess.Publicacion>();//da.ObtenerPublicaciones();
-        setPublicacion.Add( new DataAccess.Publicacion( "IronMan", "4:00PM", "CityMoll", 123 ) );
-        setPublicacion.Add( new DataAccess.Publicacion( "Inception", "4:00PM", "Multi", 31 ) );
-        setPublicacion.Add( new DataAccess.Publicacion( "El Debut de Harry", "5:00", "Mega", 3243 ) );
+    #endregion Page Load
 
-        setPublicacion[ 0 ].Comentarios.Add( new DataAccess.Comentario( "Lol AiroMan", 1234 ) );
-        setPublicacion[ 0 ].Comentarios.Add( new DataAccess.Comentario( "Jaja Ayrom Man", 39 ) );
+    #region Public Vars
 
-        Accordion1.Panes.Clear();
-        for ( int i = 0; i < setPublicacion.Count; i++ )
-        {
+    public string diaDeHoy;
+    public string otroDia;
 
-            DataAccess.Publicacion publicacion = setPublicacion[ i ];
-            AccordionPane pane = new AjaxControlToolkit.AccordionPane(); //Crear panels nuevos
-            pane.ID = "pane" + i;
-            Label lblPublicacion = new Label();
-            lblPublicacion.Text = publicacion.Pelicula + " " + publicacion.Hora + " " + publicacion.Lugar;
-            lblPublicacion.ID = "lblPub" + i;
-            pane.HeaderContainer.Controls.Add( lblPublicacion );//Agregar un label al panle recien creado
+    #endregion Public Vars
 
-
-            //ListView lstComentarios = new ListView();
-            //lstComentarios.DataSource = setPublicacion[i].Comentarios;
-            //lstComentarios.ID = "itemPlaceholder";
-            //lstComentarios.DataBind();
-
-            //pane.ContentContainer.Controls.Add( lstComentarios );//Agregar los comentarios
-
-            for ( int j = 0; j < setPublicacion[i].Comentarios.Count; j++ )
-            {
-                DataAccess.Comentario comentario = setPublicacion[ i ].Comentarios[ j ];
-                Label lblComentario = new Label();
-                lblComentario.Text = setPublicacion[i].Comentarios[j].TextoComentario+ " ";     //TODO:Mejorar Esto.
-                lblComentario.ID = string.Format( "LblComentario {0},{1}", i, j );
-                pane.ContentContainer.Controls.Add( lblComentario );
-            }
-
-
-            Accordion1.Panes.Add( pane );
-        }
-    }
-    
     protected void btn_Publicar_Click(object sender, EventArgs e)
     {
-        //DataAccess.DataAccess da = new DataAccess.DataAccess();
-        //da.IngresarPublicacion( Parser.DesCifrar( tbx_pub.Text ) );
-            //panel_comment.Visible = true;
-        //Label1.Text = lbl_user.Text;
-        //Label2.Text = tbx_pub.Text;
-        //tbx_pub.Text = "";
-        //Label3.Text = "Posted at: " + Convert.ToString(System.DateTime.Now);
-    }
-    protected void btn_logout_Click(object sender, EventArgs e)
-    {
-        //tbx_pub.Enabled = false;
-        //btn_Publicar.Enabled = false;
-        //lbl_mensaje.Visible = false;
-        //lbl_user.Text = "";
-        //tbx_user.Text = "";
-        //btn_logout.Visible = false;
-        //tbx_comment.Text = "";
-        //panel_comment.Visible = false;
-        //lbl_currentStatus.Visible = true;
-    }
-    protected void btn_comment_Click(object sender, EventArgs e)
-    {
-      //  panel_comment.Visible = true;
-    }
-    protected void btn_comentar_Click(object sender, EventArgs e)
-    {
-        //lbl_comentario.Text = tbx_comment.Text;
-        //lbl_statusComment.Text = "Posted at: " + Convert.ToString(System.DateTime.Now);
-        //lbl_userComment.Text = lbl_user.Text + " dijo: ";
-        //lbl_comentario.Visible = true;
-        //lbl_statusComment.Visible = true;
-        //lbl_userComment.Visible = true;
-        //tbx_comment.Text = "";
+        Label1.Text = lbl_user.Text;
+        Label2.Text = tbx_pub.Text;
+        tbx_pub.Text = "";
+        diaDeHoy = Convert.ToString(System.DateTime.Now);
+        Label3.Text = "Posted at: " + diaDeHoy;
     }
 
     [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
@@ -116,6 +74,8 @@ public partial class _Default : System.Web.UI.Page
     }
     protected void btn_Go_Click(object sender, EventArgs e)
     {
+        _connectSession = new ConnectSession(APPLICATION_KEY, SECRET_KEY);
+
         FBConnectAuthentication auth = new FBConnectAuthentication("148883595138929", "94da7bd77167c18aa7b075d87f445cf9"); //Note this is the "app id", not "api Key"
         if (auth.Validate() != ValidationState.Valid)
         {
@@ -133,6 +93,21 @@ public partial class _Default : System.Web.UI.Page
             // These values can now be used to communicate with Facebook on behalf of your user - perhaps using the Facebook Developer Toolkit
             // The expiry time and session secret is also available.
             this.lbl_currentStatus.Text = accessToken;
+
+           /* if (!_connectSession.IsConnected())
+            {
+                this.lbl_currentStatus.Text = "Usuario no conectado";
+            }
+            else
+            {
+                _facebookAPI = new Api(_connectSession);
+
+                user user = _facebookAPI.Users.GetInfo();
+
+                this.lbl_user.Text = string.Format("{0} {1}", user.first_name, user.last_name);
+                
+            }*/
+
             if (userId == "639765435")
             {
                 lbl_user.Text = "Hector Fernando Sabillon";
@@ -162,10 +137,25 @@ public partial class _Default : System.Web.UI.Page
 
         if (lbl_currentStatus.Text != "Error" && lbl_currentStatus.Text!="No estas conectado")
         {
-            tbx_pub.Enabled = true;
-            btn_Publicar.Enabled = true;
+            tbx_pub.Visible = true;
+            btn_Publicar.Visible = true;
+            btn_OtroDia.Visible = true;
             lbl_currentStatus.Text = "Conectado";
-            btn_logout.Visible = true;            
         }
+    }
+    protected void btn_OtroDia_Click(object sender, EventArgs e)
+    {
+        calendarioPost.Visible = true;
+        btn_PublicarOtroDia.Visible = true;
+    }
+    protected void btn_PublicarOtroDia_Click(object sender, EventArgs e)
+    {
+        Label1.Text = lbl_user.Text;
+        Label2.Text = tbx_pub.Text;
+        tbx_pub.Text = "";
+        otroDia = calendarioPost.SelectedDate.ToString();
+        Label3.Text = "Posted at: " + otroDia;
+        calendarioPost.Visible = false;
+        btn_PublicarOtroDia.Visible = false;
     }
 }

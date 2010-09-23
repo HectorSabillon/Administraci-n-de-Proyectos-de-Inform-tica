@@ -21,7 +21,7 @@
             <div id="fb-root">
             </div>
 
-<%--            <script src="http://connect.facebook.net/en_US/all.js"></script>
+            <script src="http://connect.facebook.net/en_US/all.js"></script>
             <script>
                 FB.init({ appId: '148883595138929', status: true, cookie: true, xfbml: true });
                 FB.Event.subscribe('auth.sessionChange', function (response) {
@@ -34,16 +34,7 @@
                 });
             </script>
             <div class="loginDisplay">
-                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
-                    <LoggedInTemplate>
-                        Welcome <span class="bold">
-                            <asp:LoginName ID="HeadLoginName" runat="server" />
-                        </span>! [
-                        <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out"
-                            LogoutPageUrl="~/" />
-                        ]
-                    </LoggedInTemplate>
-                </asp:LoginView>
+                
             </div>
             <div class="clear hideSkiplink">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false"
@@ -52,7 +43,7 @@
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home" />
                     </Items>
                 </asp:Menu>
-            </div>--%>
+            </div>
         </div>
         <div class="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
